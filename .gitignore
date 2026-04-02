@@ -1,0 +1,29 @@
+# Backend
+backend/.env
+backend/bin/
+backend/*.exe
+
+# Frontend
+frontend/.env.local
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+
+
+echo "# docs-platform" >> README.md
+git init
+git add .
+git commit -m "Complete project setup with backend and frontend"
+git branch -M main
+git remote add origin https://github.com/OM2309/docs-platform.git
+git push -u origin main
