@@ -5,7 +5,7 @@
 <p><strong>A production-grade documentation platform — admin authoring, public read-only, full-text search, and hierarchical navigation.</strong></p>
 
 <p>
-  <img src="https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat-square&logo=go&logoColor=white" />
+  <img src="https://img.shields.io/badge/Go-1.23+-00ADD8?style=flat-square&logo=go&logoColor=white" />
   <img src="https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js" />
   <img src="https://img.shields.io/badge/PostgreSQL-Neon-336791?style=flat-square&logo=postgresql&logoColor=white" />
   <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" />
@@ -29,13 +29,13 @@
 
 DocFlow is a **GitBook / Confluence-style** documentation platform demonstrating a complete production full-stack system.
 
-| Concern | Approach |
-|---|---|
-| **Public docs** | Drafts never leak — `status='published'` enforced at DB query level |
-| **Admin interface** | JWT-gated, full document lifecycle with version snapshots |
+| Concern              | Approach                                                                      |
+| -------------------- | ----------------------------------------------------------------------------- |
+| **Public docs**      | Drafts never leak — `status='published'` enforced at DB query level           |
+| **Admin interface**  | JWT-gated, full document lifecycle with version snapshots                     |
 | **Full-text search** | PostgreSQL `tsvector` + GIN index + weighted ranking + `ts_headline` snippets |
-| **Navigation** | Infinite hierarchy via adjacency list, assembled to tree at read time |
-| **Auth** | 15-min access tokens + 7-day refresh with rotation, bcrypt passwords |
+| **Navigation**       | Infinite hierarchy via adjacency list, assembled to tree at read time         |
+| **Auth**             | 15-min access tokens + 7-day refresh with rotation, bcrypt passwords          |
 
 ---
 
@@ -241,8 +241,8 @@ docflow/
 
 ### Prerequisites
 
-- **Go** 1.22+ &nbsp;&nbsp; `go version`
-- **Node.js** 18+ &nbsp; `node --version`
+- **Go** 1.23 &nbsp;&nbsp; `go version`
+- **Node.js** 20+ &nbsp; `node --version`
 - A **[Neon](https://neon.tech)** PostgreSQL database (free tier works)
 
 ### 1 — Configure & Start Backend
@@ -284,12 +284,12 @@ curl -X POST http://localhost:8080/api/v1/auth/register \
 
 ### 4 — Open
 
-| URL | Purpose |
-|---|---|
-| `http://localhost:3000` | Landing page |
-| `http://localhost:3000/docs` | Public documentation (SSR) |
-| `http://localhost:3000/admin` | Admin panel → login |
-| `http://localhost:8080/health` | API health check |
+| URL                            | Purpose                    |
+| ------------------------------ | -------------------------- |
+| `http://localhost:3000`        | Landing page               |
+| `http://localhost:3000/docs`   | Public documentation (SSR) |
+| `http://localhost:3000/admin`  | Admin panel → login        |
+| `http://localhost:8080/health` | API health check           |
 
 ---
 
@@ -297,20 +297,20 @@ curl -X POST http://localhost:8080/api/v1/auth/register \
 
 ### Backend (`backend/.env`)
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `DATABASE_URL` | ✅ | — | Neon connection string (`?sslmode=require`) |
-| `JWT_SECRET` | ✅ | — | Min 32-char random string |
-| `PORT` | — | `8080` | Server listen port |
-| `ENVIRONMENT` | — | `development` | `development` or `production` |
-| `ALLOWED_ORIGINS` | — | `http://localhost:3000` | Comma-separated CORS origins |
-| `JWT_EXPIRY` | — | `15m` | Access token lifetime |
-| `REFRESH_EXPIRY` | — | `7d` | Refresh token lifetime |
+| Variable          | Required | Default                 | Description                                 |
+| ----------------- | -------- | ----------------------- | ------------------------------------------- |
+| `DATABASE_URL`    | ✅       | —                       | Neon connection string (`?sslmode=require`) |
+| `JWT_SECRET`      | ✅       | —                       | Min 32-char random string                   |
+| `PORT`            | —        | `8080`                  | Server listen port                          |
+| `ENVIRONMENT`     | —        | `development`           | `development` or `production`               |
+| `ALLOWED_ORIGINS` | —        | `http://localhost:3000` | Comma-separated CORS origins                |
+| `JWT_EXPIRY`      | —        | `15m`                   | Access token lifetime                       |
+| `REFRESH_EXPIRY`  | —        | `7d`                    | Refresh token lifetime                      |
 
 ### Frontend (`frontend/.env.local`)
 
-| Variable | Default | Description |
-|---|---|---|
+| Variable              | Default                 | Description                      |
+| --------------------- | ----------------------- | -------------------------------- |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8080` | Backend origin for Next.js proxy |
 
 ---
@@ -324,38 +324,38 @@ curl -X POST http://localhost:8080/api/v1/auth/register \
 
 ### Authentication
 
-| Method | Endpoint | Description |
-|---|---|---|
+| Method | Endpoint         | Description                                                |
+| ------ | ---------------- | ---------------------------------------------------------- |
 | `POST` | `/auth/register` | Register — returns `{ access_token, refresh_token, user }` |
-| `POST` | `/auth/login` | Login — returns `{ access_token, refresh_token, user }` |
-| `POST` | `/auth/refresh` | Rotate refresh token — returns new pair, deletes old |
-| `POST` | `/auth/logout` | Revoke all refresh tokens for user |
-| `GET` | `/auth/me` | Current user profile |
+| `POST` | `/auth/login`    | Login — returns `{ access_token, refresh_token, user }`    |
+| `POST` | `/auth/refresh`  | Rotate refresh token — returns new pair, deletes old       |
+| `POST` | `/auth/logout`   | Revoke all refresh tokens for user                         |
+| `GET`  | `/auth/me`       | Current user profile                                       |
 
 ### Public Endpoints (no auth)
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/public/docs` | All published docs, metadata only (no `content` field) |
-| `GET` | `/public/docs/:slug` | Single published doc with full content. Returns `404` for drafts |
-| `GET` | `/public/nav` | Hierarchical nav tree sorted by `position` |
-| `GET` | `/public/search?q=` | FTS with ranked results + `ts_headline` snippets |
+| Method | Endpoint             | Description                                                      |
+| ------ | -------------------- | ---------------------------------------------------------------- |
+| `GET`  | `/public/docs`       | All published docs, metadata only (no `content` field)           |
+| `GET`  | `/public/docs/:slug` | Single published doc with full content. Returns `404` for drafts |
+| `GET`  | `/public/nav`        | Hierarchical nav tree sorted by `position`                       |
+| `GET`  | `/public/search?q=`  | FTS with ranked results + `ts_headline` snippets                 |
 
 ### Admin Endpoints (JWT required)
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/admin/docs` | All docs any status. Supports `?page=&page_size=&status=` |
-| `POST` | `/admin/docs` | Create doc (starts as `draft`) |
-| `GET` | `/admin/docs/:id` | Get doc by ID (includes drafts) |
-| `PUT` | `/admin/docs/:id` | Update. Saves version snapshot before writing |
-| `DELETE` | `/admin/docs/:id` | Delete doc + all versions (cascade) |
-| `PATCH` | `/admin/docs/:id/publish` | Set `status=published`, set `published_at` |
-| `PATCH` | `/admin/docs/:id/unpublish` | Set `status=draft`, clear `published_at` |
-| `PATCH` | `/admin/docs/:id/move` | Change `parent_id` + `position` |
-| `GET` | `/admin/docs/:id/versions` | Version history (newest first) |
-| `GET` | `/admin/stats` | `{ total_docs, published_docs, draft_docs, total_users }` |
-| `POST` | `/admin/search/reindex` | Rebuild tsvector index for all documents |
+| Method   | Endpoint                    | Description                                               |
+| -------- | --------------------------- | --------------------------------------------------------- |
+| `GET`    | `/admin/docs`               | All docs any status. Supports `?page=&page_size=&status=` |
+| `POST`   | `/admin/docs`               | Create doc (starts as `draft`)                            |
+| `GET`    | `/admin/docs/:id`           | Get doc by ID (includes drafts)                           |
+| `PUT`    | `/admin/docs/:id`           | Update. Saves version snapshot before writing             |
+| `DELETE` | `/admin/docs/:id`           | Delete doc + all versions (cascade)                       |
+| `PATCH`  | `/admin/docs/:id/publish`   | Set `status=published`, set `published_at`                |
+| `PATCH`  | `/admin/docs/:id/unpublish` | Set `status=draft`, clear `published_at`                  |
+| `PATCH`  | `/admin/docs/:id/move`      | Change `parent_id` + `position`                           |
+| `GET`    | `/admin/docs/:id/versions`  | Version history (newest first)                            |
+| `GET`    | `/admin/stats`              | `{ total_docs, published_docs, draft_docs, total_users }` |
+| `POST`   | `/admin/search/reindex`     | Rebuild tsvector index for all documents                  |
 
 ---
 
@@ -531,27 +531,27 @@ Phase 5            CDN tag-based cache purge on publish/unpublish
 
 ### Explicit Assumptions
 
-| Assumption | Implication |
-|---|---|
-| Single tenant | Slugs globally unique; no space scoping |
-| English content | PostgreSQL `'english'` FTS dictionary |
-| External image hosting | No file upload handling in backend |
-| Last-write-wins | No optimistic locking on concurrent edits |
-| TLS at edge | Backend trusts proxy; no in-process TLS |
+| Assumption             | Implication                               |
+| ---------------------- | ----------------------------------------- |
+| Single tenant          | Slugs globally unique; no space scoping   |
+| English content        | PostgreSQL `'english'` FTS dictionary     |
+| External image hosting | No file upload handling in backend        |
+| Last-write-wins        | No optimistic locking on concurrent edits |
+| TLS at edge            | Backend trusts proxy; no in-process TLS   |
 
 ---
 
 ## 📦 Deliverables
 
-| Item | Location |
-|---|---|
-| Backend (Go) | `backend/` |
-| Frontend (Next.js) | `frontend/` |
-| Setup (Windows) | `setup.bat` |
-| API docs | This README → API Reference |
-| DB schema | This README → Database Schema |
-| Engineering notes | This README → Engineering Notes |
-| Architecture diagrams | `ARCHITECTURE_DIAGRAMS.html` |
+| Item                  | Location                        |
+| --------------------- | ------------------------------- |
+| Backend (Go)          | `backend/`                      |
+| Frontend (Next.js)    | `frontend/`                     |
+| Setup (Windows)       | `setup.bat`                     |
+| API docs              | This README → API Reference     |
+| DB schema             | This README → Database Schema   |
+| Engineering notes     | This README → Engineering Notes |
+| Architecture diagrams | `ARCHITECTURE_DIAGRAMS.html`    |
 
 ---
 
