@@ -44,31 +44,31 @@ DocFlow is a **GitBook / Confluence-style** documentation platform demonstrating
 ### High-Level System Design
 
 ```
-┌──────────────────────────────────────────────────────────────────────────┐
+┌────────────────────────────────────────────────────────────────────────── ┐
 │                              Browser                                      │
-│                                                                            │
+│                                                                           │
 │     ┌─────────────────────────┐     ┌──────────────────────────────────┐  │
-│     │  👤 Reader              │     │  🔐 Admin                        │  │
+│     │  👤 Reader              │     │  🔐 Admin                       │  │
 │     │  /docs/*                │     │  /admin/*                        │  │
 │     │  (public, no login)     │     │  (auth-gated, CSR)               │  │
 │     └────────────┬────────────┘     └──────────────────┬───────────────┘  │
 └──────────────────┼──────────────────────────────────────┼─────────────────┘
-                   │                                       │
-                   ▼                                       ▼
+                   │                                      │
+                   ▼                                      ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                    Next.js Frontend  :3000                                │
-│                                                                            │
+│                    Next.js Frontend  :3000                               │
+│                                                                          │
 │   ┌───────────────────────────────┐   ┌───────────────────────────────┐  │
 │   │  Server Components (SSR/ISR)  │   │  Client Components (CSR)      │  │
 │   │  /docs/* pages                │   │  /admin/* pages               │  │
 │   │  revalidate: 60s              │   │  Zustand auth store           │  │
 │   │  SEO-optimized                │   │  Auto token refresh           │  │
 │   └───────────────────────────────┘   └───────────────────────────────┘  │
-│                                                                            │
-│   ┌──────────────────────────────────────────────────────────────────┐    │
-│   │  next.config.js  →  rewrites: /api/v1/* → http://localhost:8080  │    │
-│   │  (no CORS headers needed — same domain in production)            │    │
-│   └──────────────────────────────────────────────────────────────────┘    │
+│                                                                          │
+│   ┌──────────────────────────────────────────────────────────────────┐   │
+│   │  next.config.js  →  rewrites: /api/v1/* → http://localhost:8080  │   │
+│   │  (no CORS headers needed — same domain in production)            │   │
+│   └──────────────────────────────────────────────────────────────────┘   │
 └──────────────────────────────────────┬───────────────────────────────────┘
                                         │  /api/v1/* (proxied)
                                         ▼
@@ -555,12 +555,6 @@ Phase 5            CDN tag-based cache purge on publish/unpublish
 
 ---
 
-## 🪪 License
-
-MIT — assignment / demo project.
-
----
-
 <div align="center">
-  <sub>Built with Go 1.26 · Next.js 14 · Neon PostgreSQL · Tailwind CSS · JWT</sub>
+  <sub>Built with Go 1.23 · Next.js 14 · Neon PostgreSQL · Tailwind CSS · JWT</sub>
 </div>
